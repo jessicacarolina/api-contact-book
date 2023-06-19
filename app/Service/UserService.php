@@ -17,7 +17,7 @@ class UserService
             'phone' => 'required|min:8|max:11',
             'password' => 'required|min:6',
         ]);
-        if ($validator->fails()) return response()->json(['error' => 'Invalid data.']);
+        if ($validator->fails()) return response()->json(['error' => 'Invalid data.'], 400);
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
@@ -30,10 +30,10 @@ class UserService
     public function update($request, $id) {
         $validator = Validator::make($request->all(), [
             'name' => 'min:3',
-            'email' => 'email|unique:contacts',
+            'email' => 'email|unique:users',
             'phone' => 'min:8|max:11',
         ]);
-        if ($validator->fails()) return response()->json(['error' => 'Invalid data']);
+        if ($validator->fails()) return response()->json(['error' => 'Invalid data'], 400);
         $user = User::find($id);
         if(!$user) return response()->json(['error' => 'User not found!'], 404);
         $user->fill($request->only(['name', 'email', 'phone']));

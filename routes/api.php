@@ -17,10 +17,11 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::post('login', [AuthController::class, 'login'])->name('login');
-Route::post('/user', [UserController::class, 'store']);
+Route::post('/register', [UserController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/{id}', [UserController::class, 'show']);
+    Route::get('/user', [UserController::class, 'index']);
     Route::put('/user/{id}', [UserController::class, 'update']);
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
