@@ -14,4 +14,11 @@ class AuthController extends Controller
         $token = $user->createToken($request->device_name)->plainTextToken;
         return response()->json(['token' => $token], 200);
     }
+
+    public function logout(Request $request) {
+        $user = User::where('email', $request->email)->first();
+        if(!$user) return response()->json(['Error' => 'User not found'], 404);
+        $user->tokens()->delete();
+        return response()->json(['message' => 'Logged out user'], 200);
+    }
 }
