@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Contact;
 use Illuminate\Support\Facades\Validator;
+use App\Jobs\SendMailJob;
 
 class UserService
 {
@@ -24,6 +25,8 @@ class UserService
         $user->phone = $request->phone;
         $user->password = bcrypt($request->password);
         $user->save();
+        SendMailJob::dispatch($user);
+
         return response()->json(['user' => $user, 'message' => 'User created successfully!'], 200);
     }
 
