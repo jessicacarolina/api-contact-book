@@ -36,7 +36,7 @@ class ContactService
             'phone' => 'min:8|max:11',
         ]);
         if ($validator->fails()) return response()->json(['error' => 'Invalid data'], 400);
-        $contact = Contact::find($id);
+        $contact = Contact::where('id', $id)->where('user_id', auth()->user()->id)->first();
         if(!$contact) return response()->json(['error' => 'Contact not found!'], 404);
         $contact->fill($request->only(['name', 'surname', 'email', 'phone']));
         $contact->save();
@@ -44,7 +44,7 @@ class ContactService
     }
 
     public function destroy($id) {
-        $contact = Contact::find($id);
+        $contact = Contact::where('id', $id)->where('user_id', auth()->user()->id)->first();
         if(!$contact) return response()->json(['error' => 'Contact not found!'], 404);
         $contact->delete();
         return response()->json(['message' => 'Contact deleted successfully!'], 200);

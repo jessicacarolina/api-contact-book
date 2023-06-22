@@ -47,6 +47,7 @@ class UserService
     public function destroy($id) {
         $user = User::find($id);
         if(!$user) return response()->json(['error' => 'User not found!'], 404);
+        Contact::where('user_id', $user->id)->delete();
         $user->delete();
         return response()->json(['message' => 'User deleted successfully!'], 200);
     }
